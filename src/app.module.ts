@@ -9,6 +9,12 @@ import { CommentsModule } from './comments/comments.module';
 import { ProvincesModule } from './provinces/provinces.module';
 import { RatingsModule } from './ratings/ratings.module';
 import { InterestsModule } from './interests/interests.module';
+import { Comments } from './comments/entities/comment.entity';
+import { Interests } from './interests/entities/interest.entity';
+import { Provinces } from './provinces/entities/province.entity';
+import { Ranks } from './ranks/entities/rank.entity';
+import { Ratings } from './ratings/entities/rating.entity';
+import { Users } from './users/entities/user.entity';
 
 @Module({
   imports: [
@@ -20,7 +26,7 @@ import { InterestsModule } from './interests/interests.module';
       username: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      entities: [],
+      entities: [Comments, Interests, Provinces, Ranks, Ratings, Users],
       synchronize: true,
     }),
     UsersModule,

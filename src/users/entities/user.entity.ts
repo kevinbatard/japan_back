@@ -1,1 +1,57 @@
-export class User {}
+import { ApiProperty } from '@nestjs/swagger';
+import { Comments } from 'src/comments/entities/comment.entity';
+import { Provinces } from 'src/provinces/entities/province.entity';
+import { Ranks } from 'src/ranks/entities/rank.entity';
+import { Ratings } from 'src/ratings/entities/rating.entity';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryColumn,
+  Unique,
+} from 'typeorm';
+
+@Entity()
+@Unique(['pseudo', 'email'])
+export class Users extends BaseEntity {
+  @ApiProperty()
+  @PrimaryColumn({ type: 'integer' })
+  id: number;
+
+  @ApiProperty()
+  @Column({ type: 'varchar', name: 'pseudo' })
+  pseudo: string;
+
+  @ApiProperty()
+  @Column({ type: 'varchar', name: 'email' })
+  email: string;
+
+  @ApiProperty()
+  @Column({ type: 'varchar' })
+  password: string;
+
+  @ApiProperty()
+  @Column({ type: 'integer', default: 1 })
+  access_lvl: number;
+
+  @OneToMany(() => Ranks, (rank) => rank.user)
+  ranks: Ranks[];
+
+  @OneToMany(() => Comments, (comment) => comment.user)
+  comments: Comments[];
+
+  @OneToMany(() => Ratings, (rating) => rating.user)
+  ratings: Ratings[];
+
+  /* @ManyToMany(() => Provinces, (province) => province.id)
+  @JoinColumn({ name: 'visited' })
+  visited: number[];
+
+  @ManyToMany(() => Provinces, (province) => province.id)
+  @JoinColumn({ name: 'visited' })
+  target: number[]; */
+}
