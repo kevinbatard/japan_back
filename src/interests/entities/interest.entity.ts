@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Interests extends BaseEntity {
   @ApiProperty()
-  @PrimaryColumn({ type: 'integer' })
+  @PrimaryGeneratedColumn({ type: 'integer' })
   id: number;
 
   @ApiProperty()

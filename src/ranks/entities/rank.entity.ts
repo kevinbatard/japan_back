@@ -1,11 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Users } from 'src/users/entities/user.entity';
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Ranks extends BaseEntity {
   @ApiProperty()
-  @PrimaryColumn({ type: 'integer' })
+  @PrimaryGeneratedColumn({ type: 'integer' })
   id: number;
 
   @ApiProperty()

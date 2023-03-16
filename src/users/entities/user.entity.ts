@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 import { Comments } from 'src/comments/entities/comment.entity';
 import { Provinces } from 'src/provinces/entities/province.entity';
 import { Ranks } from 'src/ranks/entities/rank.entity';
@@ -11,7 +12,7 @@ import {
   JoinTable,
   ManyToMany,
   OneToMany,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 
@@ -19,7 +20,7 @@ import {
 @Unique(['pseudo', 'email'])
 export class Users extends BaseEntity {
   @ApiProperty()
-  @PrimaryColumn({ type: 'integer' })
+  @PrimaryGeneratedColumn({ type: 'integer' })
   id: number;
 
   @ApiProperty()
@@ -31,6 +32,7 @@ export class Users extends BaseEntity {
   email: string;
 
   @ApiProperty()
+  @Exclude()
   @Column({ type: 'varchar' })
   password: string;
 

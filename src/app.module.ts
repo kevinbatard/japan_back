@@ -15,6 +15,7 @@ import { Provinces } from './provinces/entities/province.entity';
 import { Ranks } from './ranks/entities/rank.entity';
 import { Ratings } from './ratings/entities/rating.entity';
 import { Users } from './users/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { Users } from './users/entities/user.entity';
     ProvincesModule,
     RatingsModule,
     InterestsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

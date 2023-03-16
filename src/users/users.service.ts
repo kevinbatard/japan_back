@@ -1,19 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Users } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async findOneByMail(email: string) {
+    return await Users.findOneBy({
+      email: email,
+    }); /* Comparer l'email communiqué par l'utilisateur... */
+  }
+
+  async create(createUserDto: CreateUserDto) {
+    const user = await Users.create({
+      ...createUserDto,
+    }).save(); /*... S'il n'existe pas déjà (Controller), créer un nouvel utilisateur */
+    return user;
   }
 
   findAll() {
     return `This action returns all users`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOneByPseudo(pseudo: string): Promise<Users | null> {
+    return await Users.findOneBy({ pseudo: pseudo });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
