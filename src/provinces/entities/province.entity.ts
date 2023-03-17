@@ -27,18 +27,13 @@ export class Provinces extends BaseEntity {
   @Column({ type: 'varchar' })
   description: string;
 
-  @ApiProperty()
-  @Column({ type: 'bytea', nullable: true })
-  photo: string;
-
   @OneToMany(() => Comments, (comments) => comments.province)
   comments: Comments[];
 
   @OneToMany(() => Ratings, (ratings) => ratings.province)
   ratings: Ratings[];
 
-  @ManyToMany(() => Interests)
-  @JoinTable()
+  @OneToMany(() => Interests, (interests) => interests.province)
   interests: Interests[];
 
   /* @ManyToMany(() => Users, (user) => user.id)

@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { Comments } from 'src/comments/entities/comment.entity';
+import { Interests } from 'src/interests/entities/interest.entity';
 import { Provinces } from 'src/provinces/entities/province.entity';
 import { Ranks } from 'src/ranks/entities/rank.entity';
 import { Ratings } from 'src/ratings/entities/rating.entity';
@@ -48,6 +49,9 @@ export class Users extends BaseEntity {
 
   @OneToMany(() => Ratings, (rating) => rating.user)
   ratings: Ratings[];
+
+  @OneToMany(() => Interests, (interest) => interest.user)
+  interests: Interests[];
 
   /* @ManyToMany(() => Provinces, (province) => province.id)
   @JoinColumn({ name: 'visited' })
