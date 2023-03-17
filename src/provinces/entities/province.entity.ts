@@ -28,7 +28,7 @@ export class Provinces extends BaseEntity {
   description: string;
 
   @ApiProperty()
-  @Column({ type: 'bytea' })
+  @Column({ type: 'bytea', nullable: true })
   photo: string;
 
   @OneToMany(() => Comments, (comments) => comments.province)

@@ -27,11 +27,11 @@ export class Comments extends BaseEntity {
   created_at: Date;
 
   @ApiProperty()
-  @UpdateDateColumn({ type: 'timestamptz', default: null, nullable: true })
+  @Column({ type: 'timestamptz', default: null, nullable: true })
   updated_at: Date;
 
   @ApiProperty()
-  @DeleteDateColumn({ type: 'timestamptz', default: null, nullable: true })
+  @Column({ type: 'timestamptz', default: null, nullable: true })
   deleted_at: Date;
 
   @ManyToOne(() => Provinces, (province) => province.comments)
