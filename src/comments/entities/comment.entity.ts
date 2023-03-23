@@ -5,11 +5,9 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()

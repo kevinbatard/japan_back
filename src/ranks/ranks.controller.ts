@@ -1,20 +1,56 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Request,
+  UnauthorizedException,
+  Bind,
+  ParseIntPipe,
+  NotFoundException,
+} from '@nestjs/common';
 import { RanksService } from './ranks.service';
 import { CreateRankDto } from './dto/create-rank.dto';
 import { UpdateRankDto } from './dto/update-rank.dto';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
+@ApiTags('Ranks')
 @Controller('ranks')
 export class RanksController {
   constructor(private readonly ranksService: RanksService) {}
 
+  @UseGuards(JwtAuthGuard)
+  @ApiResponse({ status: 201, description: 'Nouveau rang créée' })
   @Post()
-  create(@Body() createRankDto: CreateRankDto) {
-    return this.ranksService.create(createRankDto);
+  async create(@Body() createRankDto: CreateRankDto, @Request() req: any) {
+    const userData = req.user;
+    if (userData.access_lvl < 2)
+      throw new UnauthorizedException('Accès non autorisé');
+
+    const newRank = await this.ranksService.create(createRankDto);
+
+    return {
+      statusCode: 201,
+      message: 'Nouveau rang ajouté',
+      data: newRank,
+    };
   }
 
+  @ApiResponse({ status: 200, description: 'Voici tout les rangs' })
   @Get()
-  findAll() {
-    return this.ranksService.findAll();
+  async findAll() {
+    const allRanks = await this.ranksService.findAll();
+
+    return {
+      StatusCode: 200,
+      Message: 'Voici tout les rangs',
+      data: allRanks,
+    };
   }
 
   @Get(':id')
@@ -22,13 +58,44 @@ export class RanksController {
     return this.ranksService.findOne(+id);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiResponse({ status: 201, description: 'Rang modifié' })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRankDto: UpdateRankDto) {
-    return this.ranksService.update(+id, updateRankDto);
+  @Bind(Param('id', new ParseIntPipe()))
+  async update(
+    @Param('id') id: string,
+    @Body() createRankDto: CreateRankDto,
+    @Request() req: any,
+  ) {
+    const userData = req.user;
+    if (userData.access_lvl < 2)
+      throw new UnauthorizedException('Accès non autorisé');
+
+    const updateRank = await this.ranksService.update(+id, createRankDto);
+
+    if (updateRank === null) throw new NotFoundException();
+
+    return {
+      StatusCode: 201,
+      Message: 'Rang modifié',
+      data: updateRank,
+    };
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiResponse({ status: 200, description: 'Rang supprimé' })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ranksService.remove(+id);
+  @Bind(Param('id', new ParseIntPipe()))
+  async remove(@Param('id') id: string, @Request() req: any) {
+    const userData = req.user;
+
+    if (userData.access_lvl < 2)
+      throw new UnauthorizedException('Accès non autorisé');
+
+    const deleteRank = await this.ranksService.remove(+id);
+
+    if (deleteRank === null) throw new NotFoundException();
+
+    return { statusCode: 200, Message: 'Rang supprimé', data: deleteRank };
   }
 }

@@ -5,6 +5,7 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -18,6 +19,6 @@ export class Ranks extends BaseEntity {
   @Column({ type: 'varchar' })
   name: string;
 
-  @ManyToOne(() => Users, (user) => user.ranks)
-  user: Users;
+  @OneToMany(() => Users, (user) => user.ranks)
+  user: Users[];
 }

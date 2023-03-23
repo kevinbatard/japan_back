@@ -12,6 +12,7 @@ import {
   JoinColumn,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   Unique,
@@ -41,8 +42,8 @@ export class Users extends BaseEntity {
   @Column({ type: 'integer', default: 1 })
   access_lvl: number;
 
-  @OneToMany(() => Ranks, (rank) => rank.user)
-  ranks: Ranks[];
+  @ManyToOne(() => Ranks, (rank) => rank.user)
+  ranks: Ranks;
 
   @OneToMany(() => Comments, (comment) => comment.user)
   comments: Comments[];

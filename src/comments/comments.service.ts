@@ -12,13 +12,13 @@ export class CommentsService {
     createCommentDto: CreateCommentDto,
     userData: Users,
   ): Promise<Comments | null> {
-    const province = await Regions.findOneBy({
+    const region = await Regions.findOneBy({
       id: createCommentDto.region_id,
     });
-    if (province !== null) {
+    if (region !== null) {
       const comment = new Comments();
       comment.content = createCommentDto.content;
-      comment.region = province;
+      comment.region = region;
       comment.user = userData;
 
       await comment.save();
