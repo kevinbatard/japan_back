@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { Comments } from 'src/comments/entities/comment.entity';
 import { Interests } from 'src/interests/entities/interest.entity';
-import { Provinces } from 'src/provinces/entities/province.entity';
+import { Regions } from 'src/regions/entities/region.entity';
 import { Ranks } from 'src/ranks/entities/rank.entity';
 import { Ratings } from 'src/ratings/entities/rating.entity';
 import {

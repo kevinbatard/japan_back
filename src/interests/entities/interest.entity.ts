@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Provinces } from 'src/provinces/entities/province.entity';
+import { Regions } from 'src/regions/entities/region.entity';
 import { Users } from 'src/users/entities/user.entity';
 import {
   BaseEntity,
@@ -41,8 +41,8 @@ export class Interests extends BaseEntity {
   @Column({ type: 'timestamptz', default: null, nullable: true })
   deleted_at: Date;
 
-  @ManyToOne(() => Provinces, (province) => province.interests)
-  province: Provinces;
+  @ManyToOne(() => Regions, (region) => region.interests)
+  region: Regions;
 
   @ManyToOne(() => Users, (user) => user.interests)
   user: Users;

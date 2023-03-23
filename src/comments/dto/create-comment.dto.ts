@@ -9,5 +9,5 @@ export class CreateCommentDto {
 
   @ApiProperty()
   @IsInt()
-  province_id: number;
+  region_id: number;
 }

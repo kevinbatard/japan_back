@@ -15,7 +15,7 @@ import {
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { ProvincesService } from 'src/provinces/provinces.service';
+import { RegionsService } from 'src/regions/regions.service';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
@@ -25,7 +25,7 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 export class CommentsController {
   constructor(
     private readonly commentsService: CommentsService,
-    private readonly provincesService: ProvincesService,
+    private readonly provincesService: RegionsService,
   ) {}
 
   @UseGuards(JwtAuthGuard)

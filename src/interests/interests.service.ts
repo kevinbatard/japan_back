@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Provinces } from 'src/provinces/entities/province.entity';
+import { Regions } from 'src/regions/entities/region.entity';
 import { Users } from 'src/users/entities/user.entity';
 import { IsNull } from 'typeorm';
 import { CreateInterestDto } from './dto/create-interest.dto';
@@ -12,7 +12,7 @@ export class InterestsService {
     createInterestDto: CreateInterestDto,
     userData: Users,
   ): Promise<Interests | null> {
-    const province = await Provinces.findOneBy({
+    const province = await Regions.findOneBy({
       id: createInterestDto.province_id,
     });
     if (province !== null) {
@@ -20,18 +20,18 @@ export class InterestsService {
       newInterest.name = createInterestDto.name;
       newInterest.category = createInterestDto.category;
       newInterest.adress = createInterestDto.adress;
-      newInterest.province = province;
+      newInterest.region = province;
       newInterest.user = userData;
 
       await newInterest.save();
       return await Interests.findOne({
-        relations: { province: true },
+        relations: { region: true },
         select: {
           id: true,
           name: true,
           category: true,
           adress: true,
-          province: { name: true },
+          region: { name: true },
         },
         where: { id: newInterest.id },
       });
@@ -41,8 +41,8 @@ export class InterestsService {
 
   async findAllInterests(id: number): Promise<Interests[] | null> {
     return await Interests.find({
-      relations: { province: true },
-      where: { province: { id: id }, deleted_at: IsNull() },
+      relations: { region: true },
+      where: { region: { id: id }, deleted_at: IsNull() },
       select: {
         id: true,
         name: true,
@@ -71,7 +71,7 @@ export class InterestsService {
       await newInterest.save();
 
       return await Interests.findOne({
-        relations: { province: true },
+        relations: { region: true },
         where: { id: id, deleted_at: IsNull() },
         select: {
           id: true,
@@ -80,7 +80,7 @@ export class InterestsService {
           adress: true,
           created_at: true,
           updated_at: true,
-          province: { name: true },
+          region: { name: true },
         },
       });
     }

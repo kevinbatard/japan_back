@@ -18,13 +18,13 @@ import { CreateInterestDto } from './dto/create-interest.dto';
 import { UpdateInterestDto } from './dto/update-interest.dto';
 import { ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { ProvincesService } from 'src/provinces/provinces.service';
+import { RegionsService } from 'src/regions/regions.service';
 
 @Controller('interests')
 export class InterestsController {
   constructor(
     private readonly interestsService: InterestsService,
-    private readonly provincesService: ProvincesService,
+    private readonly regionsService: RegionsService,
   ) {}
 
   @ApiResponse({
@@ -48,7 +48,7 @@ export class InterestsController {
   @Get('province/:id')
   @Bind(Param('id', new ParseIntPipe()))
   async find(@Param('id') id: string) {
-    const isExist = await this.provincesService.findOneById(+id);
+    const isExist = await this.regionsService.findOneById(+id);
     if (!isExist) throw new NotFoundException();
     return {
       message: `Voici tout les commentaire de la province ${isExist.name}.`,

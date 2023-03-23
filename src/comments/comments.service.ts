@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Provinces } from 'src/provinces/entities/province.entity';
+import { Regions } from 'src/regions/entities/region.entity';
 import { Users } from 'src/users/entities/user.entity';
 import { IsNull } from 'typeorm';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -12,24 +12,24 @@ export class CommentsService {
     createCommentDto: CreateCommentDto,
     userData: Users,
   ): Promise<Comments | null> {
-    const province = await Provinces.findOneBy({
-      id: createCommentDto.province_id,
+    const province = await Regions.findOneBy({
+      id: createCommentDto.region_id,
     });
     if (province !== null) {
       const comment = new Comments();
       comment.content = createCommentDto.content;
-      comment.province = province;
+      comment.region = province;
       comment.user = userData;
 
       await comment.save();
 
       return await Comments.findOne({
-        relations: { province: true, user: true },
+        relations: { region: true, user: true },
         select: {
           id: true,
           content: true,
           created_at: true,
-          province: { id: true, name: true },
+          region: { id: true, name: true },
           user: { id: true, pseudo: true },
         },
         where: { id: comment.id },
@@ -40,8 +40,8 @@ export class CommentsService {
 
   async findAllComments(id: number): Promise<Comments[] | null> {
     return await Comments.find({
-      relations: { user: true, province: true },
-      where: { province: { id: id }, deleted_at: IsNull() },
+      relations: { user: true, region: true },
+      where: { region: { id: id }, deleted_at: IsNull() },
       select: {
         id: true,
         content: true,

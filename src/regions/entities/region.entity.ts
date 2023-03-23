@@ -14,7 +14,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Provinces extends BaseEntity {
+export class Regions extends BaseEntity {
   @ApiProperty()
   @PrimaryGeneratedColumn({ type: 'integer' })
   id: number;
@@ -27,13 +27,13 @@ export class Provinces extends BaseEntity {
   @Column({ type: 'varchar' })
   description: string;
 
-  @OneToMany(() => Comments, (comments) => comments.province)
+  @OneToMany(() => Comments, (comments) => comments.region)
   comments: Comments[];
 
-  @OneToMany(() => Ratings, (ratings) => ratings.province)
+  @OneToMany(() => Ratings, (ratings) => ratings.region)
   ratings: Ratings[];
 
-  @OneToMany(() => Interests, (interests) => interests.province)
+  @OneToMany(() => Interests, (interests) => interests.region)
   interests: Interests[];
 
   /* @ManyToMany(() => Users, (user) => user.id)

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Provinces } from 'src/provinces/entities/province.entity';
+import { Regions } from 'src/regions/entities/region.entity';
 import { Users } from 'src/users/entities/user.entity';
 import {
   BaseEntity,
@@ -19,8 +19,8 @@ export class Ratings extends BaseEntity {
   @Column({ type: 'varchar' })
   rate: string;
 
-  @ManyToOne(() => Provinces, (province) => province.ratings)
-  province: Provinces;
+  @ManyToOne(() => Regions, (region) => region.ratings)
+  region: Regions;
 
   @ManyToOne(() => Users, (user) => user.ratings)
   user: Users;
