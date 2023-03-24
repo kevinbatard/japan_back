@@ -36,9 +36,6 @@ export class Regions extends BaseEntity {
   @OneToMany(() => Interests, (interests) => interests.region)
   interests: Interests[];
 
-  /* @ManyToMany(() => Users, (user) => user.id)
-  users_visit: number[];
-
-  @ManyToMany(() => Users, (user) => user.id)
-  users_target: number[]; */
+  @ManyToMany(() => Users, (user) => user.regions)
+  users: Users[];
 }

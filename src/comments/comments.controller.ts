@@ -16,6 +16,7 @@ import {
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RegionsService } from 'src/regions/regions.service';
+import { Users } from 'src/users/entities/user.entity';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
@@ -33,7 +34,7 @@ export class CommentsController {
   @Post()
   async create(
     @Body() createCommentDto: CreateCommentDto,
-    @Request() req: any,
+    @Request() req: { user: Users },
   ) {
     const userData = req.user;
 
@@ -86,7 +87,7 @@ export class CommentsController {
   @UseGuards(JwtAuthGuard)
   @Bind(Param('id', new ParseIntPipe()))
   @Delete(':id')
-  async remove(@Param('id') id: string, @Request() req: any) {
+  async remove(@Param('id') id: string, @Request() req: { user: Users }) {
     const userData = req.user;
 
     const isYourComment = await this.commentsService.findOne(+id);

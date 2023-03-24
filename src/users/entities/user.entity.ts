@@ -9,7 +9,6 @@ import {
   BaseEntity,
   Column,
   Entity,
-  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -54,11 +53,11 @@ export class Users extends BaseEntity {
   @OneToMany(() => Interests, (interest) => interest.user)
   interests: Interests[];
 
-  /* @ManyToMany(() => Provinces, (province) => province.id)
-  @JoinColumn({ name: 'visited' })
-  visited: number[];
-
-  @ManyToMany(() => Provinces, (province) => province.id)
-  @JoinColumn({ name: 'visited' })
-  target: number[]; */
+  @ManyToMany(() => Regions, (region) => region.users)
+  @JoinTable({
+    name: 'region_visited_user',
+    joinColumn: { name: 'regionId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'userId', referencedColumnName: 'id' },
+  })
+  regions: Regions[];
 }

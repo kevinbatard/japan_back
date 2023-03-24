@@ -5,6 +5,7 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -16,10 +17,11 @@ export class Ratings extends BaseEntity {
   id: number;
 
   @ApiProperty()
-  @Column({ type: 'varchar' })
-  rate: string;
+  @Column({ type: 'integer' })
+  rate: number;
 
   @ManyToOne(() => Regions, (region) => region.ratings)
+  @JoinColumn()
   region: Regions;
 
   @ManyToOne(() => Users, (user) => user.ratings)

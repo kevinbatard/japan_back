@@ -15,9 +15,9 @@ import {
 } from '@nestjs/common';
 import { RanksService } from './ranks.service';
 import { CreateRankDto } from './dto/create-rank.dto';
-import { UpdateRankDto } from './dto/update-rank.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Users } from 'src/users/entities/user.entity';
 
 @ApiTags('Ranks')
 @Controller('ranks')
@@ -27,7 +27,10 @@ export class RanksController {
   @UseGuards(JwtAuthGuard)
   @ApiResponse({ status: 201, description: 'Nouveau rang créée' })
   @Post()
-  async create(@Body() createRankDto: CreateRankDto, @Request() req: any) {
+  async create(
+    @Body() createRankDto: CreateRankDto,
+    @Request() req: { user: Users },
+  ) {
     const userData = req.user;
     if (userData.access_lvl < 2)
       throw new UnauthorizedException('Accès non autorisé');
@@ -65,7 +68,7 @@ export class RanksController {
   async update(
     @Param('id') id: string,
     @Body() createRankDto: CreateRankDto,
-    @Request() req: any,
+    @Request() req: { user: Users },
   ) {
     const userData = req.user;
     if (userData.access_lvl < 2)
@@ -86,7 +89,7 @@ export class RanksController {
   @ApiResponse({ status: 200, description: 'Rang supprimé' })
   @Delete(':id')
   @Bind(Param('id', new ParseIntPipe()))
-  async remove(@Param('id') id: string, @Request() req: any) {
+  async remove(@Param('id') id: string, @Request() req: { user: Users }) {
     const userData = req.user;
 
     if (userData.access_lvl < 2)

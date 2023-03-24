@@ -41,7 +41,7 @@ export class RanksService {
     return null;
   }
 
-  async remove(id: number): Promise<{} | null> {
+  async remove(id: number): Promise<Ranks | null> {
     const rank = await Ranks.findOne({ where: { id: id } });
 
     if (rank !== null) {
