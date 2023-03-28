@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Users } from 'src/users/entities/user.entity';
 import { CreateRankDto } from './dto/create-rank.dto';
-import { UpdateRankDto } from './dto/update-rank.dto';
 import { Ranks } from './entities/rank.entity';
 
 @Injectable()
