@@ -38,7 +38,16 @@ export class InterestsController {
     @Request() req: any,
   ) {
     const userData = req.user;
-    return this.interestsService.create(createInterestDto, userData);
+
+    const newInterest = await this.interestsService.create(
+      createInterestDto,
+      userData,
+    );
+    return {
+      StatusCode: 200,
+      Message: `Point d'intéret ajouté`,
+      data: newInterest,
+    };
   }
 
   @ApiResponse({
@@ -51,13 +60,14 @@ export class InterestsController {
     const isExist = await this.regionsService.findOneById(+id);
     if (!isExist) throw new NotFoundException();
     return {
-      message: `Voici tout les commentaire de la province ${isExist.name}.`,
+      statusCode: 200,
+      message: `Voici tout les points d'intéret de la province ${isExist.name}.`,
       data: await this.interestsService.findAllInterests(+id),
     };
   }
 
   @ApiResponse({
-    status: 201,
+    status: 200,
     description: "Vous avez modifié le point d'intéret n°${id}",
   })
   @UseGuards(JwtAuthGuard)
@@ -75,13 +85,14 @@ export class InterestsController {
     if (interestUpdated === null) throw new NotFoundException();
 
     return {
+      StatusCode: 200,
       message: `Vous avez modifié le point d'intéret n°${id}`,
       data: interestUpdated,
     };
   }
 
   @ApiResponse({
-    status: 201,
+    status: 200,
     description: `Point d'intéret supprimé`,
   })
   @UseGuards(JwtAuthGuard)
@@ -105,6 +116,7 @@ export class InterestsController {
     if (interestDeleted === null) throw new NotFoundException();
 
     return {
+      StatusCode: 200,
       message: `Point d'intéret n°${id} supprimé`,
       data: interestDeleted,
     };

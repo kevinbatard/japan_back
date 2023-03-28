@@ -53,7 +53,7 @@ export class RatingsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @ApiResponse({ status: 201, description: 'Note Modifiée !' })
+  @ApiResponse({ status: 200, description: 'Note Modifiée !' })
   @Patch(':id')
   @Bind(Param('id', new ParseIntPipe()))
   async update(
@@ -76,7 +76,7 @@ export class RatingsController {
     if (updateRate === null) throw new NotFoundException('Note introuvable.');
 
     return {
-      StatusCode: 201,
+      StatusCode: 200,
       Message: 'Note Modifiée !',
       Data: updateRate,
     };

@@ -62,7 +62,7 @@ export class RanksController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @ApiResponse({ status: 201, description: 'Rang modifié' })
+  @ApiResponse({ status: 200, description: 'Rang modifié' })
   @Patch(':id')
   @Bind(Param('id', new ParseIntPipe()))
   async update(
@@ -79,7 +79,7 @@ export class RanksController {
     if (updateRank === null) throw new NotFoundException();
 
     return {
-      StatusCode: 201,
+      StatusCode: 200,
       Message: 'Rang modifié',
       data: updateRank,
     };
