@@ -14,11 +14,13 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
+import { ApiResponse } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @ApiResponse({ status: 201, description: 'Utilisateur enregistré !' })
   @UseInterceptors(ClassSerializerInterceptor)
   @Post('register')
   async create(@Body() createUserDto: CreateUserDto) {
@@ -46,6 +48,7 @@ export class UsersController {
       createUserDto,
     ); /* Créé le nouvel utilisateur */
     return {
+      StatusCode: 201,
       message: `${createUserDto.pseudo} a bien été enregistré` /* Concatenation d'une variable dans un string littéral pour écrire le pseudo */,
       data: data /* Renvoie la data sans le mot de passe évidemment */,
     };

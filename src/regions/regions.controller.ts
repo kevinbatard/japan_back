@@ -68,7 +68,7 @@ export class RegionsController {
     return this.provincesService.findOne(+id);
   } */
 
-  @ApiResponse({ status: 201, description: 'Description modifiée' })
+  @ApiResponse({ status: 200, description: 'Description modifiée' })
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   @Bind(Param('id', new ParseIntPipe()))
@@ -88,7 +88,7 @@ export class RegionsController {
       throw new NotFoundException('Region introuvalbe');
 
     return {
-      StatusCode: 201,
+      StatusCode: 200,
       Message: 'Description modifié',
       Data: updateRegion,
     };
