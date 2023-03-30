@@ -9,12 +9,16 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   ConflictException,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { ApiResponse } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Users } from './entities/user.entity';
 
 @Controller('users')
 export class UsersController {
@@ -54,14 +58,22 @@ export class UsersController {
     };
   }
 
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
-  }
+  @ApiResponse({ status: 200, description: 'Visite enregistrée.' })
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Patch()
+  async update(
+    @Body() updateUserDto: UpdateUserDto,
+    @Req() req: { user: Users },
+  ) {
+    const userData = req.user;
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+    const newVisit = await this.usersService.update(updateUserDto, userData);
+
+    if (newVisit === null)
+      throw new ConflictException('Vous avez déjà visité cette région');
+
+    return newVisit;
   }
 
   @Delete(':id')

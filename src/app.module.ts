@@ -27,7 +27,7 @@ import { AuthModule } from './auth/auth.module';
       database: process.env.DATABASE_NAME,
       entities: [Comments, Interests, Regions, Ranks, Users],
       synchronize: true,
-      logging: true,
+      logging: false,
     }),
     UsersModule,
     RanksModule,
