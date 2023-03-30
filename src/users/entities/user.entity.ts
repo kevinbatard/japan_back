@@ -4,7 +4,6 @@ import { Comments } from 'src/comments/entities/comment.entity';
 import { Interests } from 'src/interests/entities/interest.entity';
 import { Regions } from 'src/regions/entities/region.entity';
 import { Ranks } from 'src/ranks/entities/rank.entity';
-import { Ratings } from 'src/ratings/entities/rating.entity';
 import {
   BaseEntity,
   Column,
@@ -47,17 +46,10 @@ export class Users extends BaseEntity {
   @OneToMany(() => Comments, (comment) => comment.user)
   comments: Comments[];
 
-  @OneToMany(() => Ratings, (rating) => rating.user)
-  ratings: Ratings[];
-
   @OneToMany(() => Interests, (interest) => interest.user)
   interests: Interests[];
 
-  @ManyToMany(() => Regions, (region) => region.users)
-  @JoinTable({
-    name: 'region_visited_user',
-    joinColumn: { name: 'regionId', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'userId', referencedColumnName: 'id' },
-  })
-  regions: Regions[];
+  @ManyToMany(() => Regions, (region) => region.users_visitor)
+  @JoinTable()
+  visited_regions: Regions[];
 }

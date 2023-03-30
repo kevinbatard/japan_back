@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Comments } from 'src/comments/entities/comment.entity';
 import { Interests } from 'src/interests/entities/interest.entity';
-import { Ratings } from 'src/ratings/entities/rating.entity';
 import { Users } from 'src/users/entities/user.entity';
 import {
   BaseEntity,
@@ -32,12 +31,9 @@ export class Regions extends BaseEntity {
   @OneToMany(() => Comments, (comments) => comments.region)
   comments: Comments[];
 
-  @OneToMany(() => Ratings, (ratings) => ratings.region)
-  ratings: Ratings[];
-
   @OneToMany(() => Interests, (interests) => interests.region)
   interests: Interests[];
 
-  @ManyToMany(() => Users, (user) => user.regions)
-  users: Users[];
+  @ManyToMany(() => Users, (user) => user.visited_regions)
+  users_visitor: Users[];
 }
