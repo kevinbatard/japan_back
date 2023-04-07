@@ -58,7 +58,7 @@ export class RegionsController {
 
     return {
       StatusCode: 200,
-      Message: 'Voici tout les rangs',
+      Message: 'Voici tout les régions',
       data: allRegions,
     };
   }
