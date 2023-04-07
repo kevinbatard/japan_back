@@ -20,6 +20,7 @@ import { UpdateRegionDto } from './dto/update-region.dto';
 import { ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Users } from 'src/users/entities/user.entity';
+import { GetRegionDto } from './dto/getRegion.dto';
 
 @Controller('regions')
 export class RegionsController {
@@ -63,10 +64,19 @@ export class RegionsController {
     };
   }
 
-  /*  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.provincesService.findOne(+id);
-  } */
+  @ApiResponse({ status: 200, description: 'Voica la région.' })
+  @Post('get')
+  async findOne(@Body() getRegionDto: GetRegionDto) {
+    const region = await this.regionsService.findOneByName(getRegionDto);
+
+    if (region === null) throw new NotFoundException('Region introuvalble');
+
+    return {
+      StatusCode: 200,
+      Message: 'Voici la region demandée.',
+      data: region,
+    };
+  }
 
   @ApiResponse({ status: 200, description: 'Description modifiée' })
   @UseGuards(JwtAuthGuard)

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRegionDto } from './dto/create-region.dto';
+import { GetRegionDto } from './dto/getRegion.dto';
 import { UpdateRegionDto } from './dto/update-region.dto';
 import { Regions } from './entities/region.entity';
 
@@ -14,10 +15,8 @@ export class RegionsService {
     return await Regions.findOne({ where: { id: newRegion.id } });
   }
 
-  async findOneByName(
-    createRegionDto: CreateRegionDto,
-  ): Promise<Regions | null> {
-    const region = Regions.findOne({ where: { name: createRegionDto.name } });
+  async findOneByName(getRegionDto: GetRegionDto): Promise<Regions | null> {
+    const region = Regions.findOne({ where: { name: getRegionDto.name } });
     if (region !== null) return region;
 
     return null;
