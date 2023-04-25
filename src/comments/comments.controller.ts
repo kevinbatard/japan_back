@@ -86,7 +86,7 @@ export class CommentsController {
 
     return {
       StatusCode: 200,
-      message: `Vous avez modifié le commentaire n°${id}`,
+      message: `Commentaire modifié`,
       data: commentUpdated,
     };
   }
@@ -115,7 +115,7 @@ export class CommentsController {
 
     return {
       StatusCode: 200,
-      message: `Commentaire n°${id} supprimé`,
+      message: `Commentaire supprimé`,
       data: commentDeleted,
     };
   }

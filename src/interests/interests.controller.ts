@@ -52,16 +52,16 @@ export class InterestsController {
 
   @ApiResponse({
     status: 200,
-    description: "Voici tout les points d'intérets de la province ${id}.",
+    description: "Voici tout les points d'intérets de la region.",
   })
-  @Get('province/:id')
+  @Get('region/:id')
   @Bind(Param('id', new ParseIntPipe()))
   async find(@Param('id') id: string) {
     const isExist = await this.regionsService.findOneById(+id);
     if (!isExist) throw new NotFoundException();
     return {
       statusCode: 200,
-      message: `Voici tout les points d'intéret de la province ${isExist.name}.`,
+      message: `Voici tout les points d'intéret de la region ${isExist.name}.`,
       data: await this.interestsService.findAllInterests(+id),
     };
   }

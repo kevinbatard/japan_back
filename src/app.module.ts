@@ -14,6 +14,8 @@ import { Regions } from './regions/entities/region.entity';
 import { Ranks } from './ranks/entities/rank.entity';
 import { Users } from './users/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
+import { CategoriesModule } from './categories/categories.module';
+import { Category } from './categories/entities/category.entity';
 
 @Module({
   imports: [
@@ -25,7 +27,7 @@ import { AuthModule } from './auth/auth.module';
       username: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      entities: [Comments, Interests, Regions, Ranks, Users],
+      entities: [Comments, Interests, Regions, Ranks, Users, Category],
       synchronize: true,
       logging: false,
     }),
@@ -35,6 +37,7 @@ import { AuthModule } from './auth/auth.module';
     RegionsModule,
     InterestsModule,
     AuthModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

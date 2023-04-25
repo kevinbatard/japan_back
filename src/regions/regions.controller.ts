@@ -59,7 +59,7 @@ export class RegionsController {
 
     return {
       StatusCode: 200,
-      Message: 'Voici tout les régions',
+      Message: 'Voici toutes les régions',
       data: allRegions,
     };
   }

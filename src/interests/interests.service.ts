@@ -12,26 +12,31 @@ export class InterestsService {
     createInterestDto: CreateInterestDto,
     userData: Users,
   ): Promise<Interests | null> {
-    const province = await Regions.findOneBy({
+    const region = await Regions.findOneBy({
       id: createInterestDto.province_id,
     });
-    if (province !== null) {
+    if (region !== null) {
       const newInterest = new Interests();
       newInterest.name = createInterestDto.name;
-      newInterest.category = createInterestDto.category;
       newInterest.adress = createInterestDto.adress;
-      newInterest.region = province;
+      newInterest.region = region;
       newInterest.user = userData;
+      newInterest.category = createInterestDto.category;
+      newInterest.latitude = createInterestDto.latitude;
+      newInterest.longitude = createInterestDto.longitude;
 
       await newInterest.save();
       return await Interests.findOne({
-        relations: { region: true },
+        relations: { region: true, user: true, category: true },
         select: {
           id: true,
           name: true,
-          category: true,
           adress: true,
+          latitude: true,
+          longitude: true,
+          category: { name: true },
           region: { name: true },
+          user: { pseudo: true },
         },
         where: { id: newInterest.id },
       });
@@ -41,13 +46,14 @@ export class InterestsService {
 
   async findAllInterests(id: number): Promise<Interests[] | null> {
     return await Interests.find({
-      relations: { region: true },
+      relations: { region: true, category: true },
       where: { region: { id: id }, deleted_at: IsNull() },
       select: {
         id: true,
         name: true,
         created_at: true,
         updated_at: true,
+        category: { name: true },
       },
       order: { created_at: 'DESC' },
     });
@@ -63,24 +69,30 @@ export class InterestsService {
 
     if (newInterest !== null) {
       if (updateInterestDto.name) newInterest.name = updateInterestDto.name;
-      if (updateInterestDto.category)
-        newInterest.category = updateInterestDto.category;
       if (updateInterestDto.adress)
         newInterest.adress = updateInterestDto.adress;
+      if (updateInterestDto.latitude)
+        newInterest.latitude = updateInterestDto.latitude;
+      if (updateInterestDto.longitude)
+        newInterest.longitude = updateInterestDto.longitude;
+      if (updateInterestDto.category)
+        newInterest.category = updateInterestDto.category;
       newInterest.updated_at = new Date();
       await newInterest.save();
 
       return await Interests.findOne({
-        relations: { region: true },
+        relations: { region: true, category: true },
         where: { id: id, deleted_at: IsNull() },
         select: {
           id: true,
           name: true,
-          category: true,
           adress: true,
+          latitude: true,
+          longitude: true,
           created_at: true,
           updated_at: true,
           region: { name: true },
+          category: { name: true },
         },
       });
     }
@@ -95,7 +107,6 @@ export class InterestsService {
         user: { pseudo: true },
         id: true,
         name: true,
-        category: true,
         adress: true,
         created_at: true,
         updated_at: true,
@@ -118,17 +129,17 @@ export class InterestsService {
       await deleteInterest?.save();
 
       return await Interests.findOne({
-        relations: { user: true },
+        relations: { user: true, category: true },
         where: { id: id },
         select: {
           id: true,
           name: true,
-          category: true,
           adress: true,
           created_at: true,
           updated_at: true,
           deleted_at: true,
           user: { pseudo: true },
+          category: { name: true },
         },
       });
     }

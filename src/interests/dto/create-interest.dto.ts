@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString, Length } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, Length } from 'class-validator';
+import { Category } from 'src/categories/entities/category.entity';
 
 export class CreateInterestDto {
   @ApiProperty()
@@ -10,12 +11,22 @@ export class CreateInterestDto {
   @ApiProperty()
   @IsString()
   @Length(1, 8000)
-  category: string;
+  adress: string;
 
   @ApiProperty()
-  @IsString()
-  @Length(1, 8000)
-  adress: string;
+  @IsNumber()
+  @IsNotEmpty()
+  latitude: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
+  longitude: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
+  category: Category;
 
   @ApiProperty()
   @IsNumber()

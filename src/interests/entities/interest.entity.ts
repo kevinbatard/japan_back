@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Category } from 'src/categories/entities/category.entity';
 import { Regions } from 'src/regions/entities/region.entity';
 import { Users } from 'src/users/entities/user.entity';
 import {
@@ -6,8 +7,9 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
-  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -23,11 +25,15 @@ export class Interests extends BaseEntity {
 
   @ApiProperty()
   @Column({ type: 'varchar' })
-  category: string;
+  adress: string;
 
   @ApiProperty()
-  @Column({ type: 'varchar' })
-  adress: string;
+  @Column({ type: 'numeric' })
+  latitude: number;
+
+  @ApiProperty()
+  @Column({ type: 'numeric' })
+  longitude: number;
 
   @ApiProperty()
   @CreateDateColumn({ type: 'timestamptz' })
@@ -46,4 +52,8 @@ export class Interests extends BaseEntity {
 
   @ManyToOne(() => Users, (user) => user.interests)
   user: Users;
+
+  @OneToOne(() => Category)
+  @JoinColumn()
+  category: Category;
 }
