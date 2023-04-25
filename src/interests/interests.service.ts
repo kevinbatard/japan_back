@@ -53,6 +53,8 @@ export class InterestsService {
         name: true,
         created_at: true,
         updated_at: true,
+        latitude: true,
+        longitude: true,
         category: { name: true },
         region: { name: true },
       },
