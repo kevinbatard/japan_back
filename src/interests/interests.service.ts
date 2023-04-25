@@ -54,6 +54,7 @@ export class InterestsService {
         created_at: true,
         updated_at: true,
         category: { name: true },
+        region: { name: true },
       },
       order: { created_at: 'DESC' },
     });
