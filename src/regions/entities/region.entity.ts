@@ -32,6 +32,14 @@ export class Regions extends BaseEntity {
   @Column({ type: 'varchar', nullable: true })
   description_mini: string;
 
+  @ApiProperty()
+  @Column({ type: 'numeric' })
+  mapLat: number;
+
+  @ApiProperty()
+  @Column({ type: 'numeric' })
+  mapLon: number;
+
   @OneToMany(() => Comments, (comments) => comments.region)
   comments: Comments[];
 

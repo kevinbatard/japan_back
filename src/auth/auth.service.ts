@@ -31,7 +31,7 @@ export class AuthService {
     return {
       statusCode: 201,
       message: 'Login Ok',
-      data: { access_token: this.jwtService.sign(payload), ...user },
+      data: { access_token: this.jwtService.sign(payload), user: user },
     };
   }
 }

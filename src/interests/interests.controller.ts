@@ -102,7 +102,8 @@ export class InterestsController {
     const userData = req.user;
 
     const isYourInterest = await this.interestsService.findOne(+id);
-
+    if (!isYourInterest)
+      throw new NotFoundException("Ce point d'intéret n'existe pas.");
     if (
       userData.pseudo !== isYourInterest?.user.pseudo &&
       userData.access_lvl < 3

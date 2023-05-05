@@ -28,11 +28,11 @@ export class Interests extends BaseEntity {
   adress: string;
 
   @ApiProperty()
-  @Column({ type: 'numeric' })
+  @Column({ type: 'float' })
   latitude: number;
 
   @ApiProperty()
-  @Column({ type: 'numeric' })
+  @Column({ type: 'float' })
   longitude: number;
 
   @ApiProperty()
@@ -53,7 +53,6 @@ export class Interests extends BaseEntity {
   @ManyToOne(() => Users, (user) => user.interests)
   user: Users;
 
-  @OneToOne(() => Category)
-  @JoinColumn()
+  @ManyToOne(() => Category, (category) => category.interests)
   category: Category;
 }

@@ -45,21 +45,25 @@ export class InterestsService {
   }
 
   async findAllInterests(id: number): Promise<Interests[] | null> {
-    return await Interests.find({
-      relations: { region: true, category: true },
+    const test = await Interests.find({
+      relations: { region: true, category: true, user: true },
       where: { region: { id: id }, deleted_at: IsNull() },
       select: {
         id: true,
         name: true,
+        adress: true,
         created_at: true,
         updated_at: true,
         latitude: true,
         longitude: true,
         category: { name: true },
         region: { name: true },
+        user: { pseudo: true },
       },
       order: { created_at: 'DESC' },
     });
+
+    return test;
   }
 
   async update(
@@ -84,7 +88,7 @@ export class InterestsService {
       await newInterest.save();
 
       return await Interests.findOne({
-        relations: { region: true, category: true },
+        relations: { region: true, category: true, user: true },
         where: { id: id, deleted_at: IsNull() },
         select: {
           id: true,
@@ -96,6 +100,7 @@ export class InterestsService {
           updated_at: true,
           region: { name: true },
           category: { name: true },
+          user: { pseudo: true },
         },
       });
     }

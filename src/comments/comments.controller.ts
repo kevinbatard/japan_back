@@ -54,7 +54,7 @@ export class CommentsController {
     status: 200,
     description: 'Voici tout les commentaire de la province ${id}.',
   })
-  @Get('province/:id')
+  @Get('region/:id')
   @Bind(Param('id', new ParseIntPipe()))
   async find(@Param('id') id: string) {
     const isExist = await this.provincesService.findOneById(+id);
@@ -105,7 +105,7 @@ export class CommentsController {
 
     if (
       userData.pseudo !== isYourComment?.user.pseudo &&
-      userData.access_lvl < 3
+      userData.access_lvl < 2
     )
       throw new UnauthorizedException('Ce commentaire ne vous appartient pas');
 
