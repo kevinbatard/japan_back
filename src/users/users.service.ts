@@ -44,7 +44,35 @@ export class UsersService {
     return user;
   }
 
-  async update(
+  async lessVisit(
+    updateUserDto: UpdateUserDto,
+    userData: Users,
+  ): Promise<Users | null> {
+    const visit = await Users.findOne({
+      relations: { visited_regions: true },
+      where: { id: userData.id },
+    });
+    const region = await Regions.findOne({
+      where: { id: updateUserDto.region_id },
+    });
+
+    if (region !== null && visit !== null) {
+      const copyTable = [...visit.visited_regions];
+      const updatedRegions = copyTable.filter(
+        (elm: Regions) => elm.id !== region.id,
+      );
+      visit.visited_regions = updatedRegions;
+      await visit.save();
+
+      return await Users.findOne({
+        relations: { visited_regions: true },
+        where: { id: userData.id },
+      });
+    }
+    return null;
+  }
+
+  async moreVisit(
     updateUserDto: UpdateUserDto,
     userData: Users,
   ): Promise<Users | null> {
@@ -68,9 +96,5 @@ export class UsersService {
     }
 
     return null;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
   }
 }

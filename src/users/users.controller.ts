@@ -11,6 +11,7 @@ import {
   ConflictException,
   UseGuards,
   Req,
+  NotFoundException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -61,23 +62,39 @@ export class UsersController {
   @ApiResponse({ status: 200, description: 'Visite enregistrée.' })
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
-  @Patch()
-  async update(
+  @Patch('add')
+  async addVisit(
     @Body() updateUserDto: UpdateUserDto,
     @Req() req: { user: Users },
   ) {
     const userData = req.user;
 
-    const newVisit = await this.usersService.update(updateUserDto, userData);
+    const newVisit = await this.usersService.moreVisit(updateUserDto, userData);
 
     if (newVisit === null)
       throw new ConflictException('Vous avez déjà visité cette région');
 
-    return newVisit;
+    return { StatusCode: 200, message: 'Visite enregistrée.', data: newVisit };
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @ApiResponse({ status: 200, description: 'Visite retirée.' })
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Patch('remove')
+  async removeVisit(
+    @Body() updateUserDto: UpdateUserDto,
+    @Req() req: { user: Users },
+  ) {
+    const userData = req.user;
+
+    const removeVisit = await this.usersService.lessVisit(
+      updateUserDto,
+      userData,
+    );
+    console.log(removeVisit);
+
+    if (removeVisit === null)
+      throw new NotFoundException("Vous n'avez pas visité cette région");
+    return { StatusCode: 200, message: 'Visite retirée.', data: removeVisit };
   }
 }
