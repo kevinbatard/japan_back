@@ -28,10 +28,12 @@ export class AuthService {
   async login(user: Users) {
     const payload = { pseudo: user.pseudo, sub: user.id };
 
+    const dataUser = await this.usersService.findOneComplete(user.id);
+
     return {
       statusCode: 201,
       message: 'Login Ok',
-      data: { access_token: this.jwtService.sign(payload), user: user },
+      data: { access_token: this.jwtService.sign(payload), user: dataUser },
     };
   }
 }

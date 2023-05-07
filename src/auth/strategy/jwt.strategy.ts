@@ -9,8 +9,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly usersService: UsersService) {
     super({
       jwtFromRequest: (req: Request) => {
-        console.log(req.cookies['token']);
-
         if (!req || !req.cookies) return null;
         return req.cookies['token'];
       },

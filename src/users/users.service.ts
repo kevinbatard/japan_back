@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Regions } from 'src/regions/entities/region.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -21,6 +25,23 @@ export class UsersService {
 
   async findOneByPseudo(pseudo: string): Promise<Users | null> {
     return await Users.findOneBy({ pseudo: pseudo });
+  }
+
+  async findOneComplete(id: number): Promise<Users | null> {
+    const user = await Users.findOne({
+      relations: { ranks: true, visited_regions: true },
+      select: {
+        id: true,
+        pseudo: true,
+        email: true,
+        visited_regions: true,
+        access_lvl: true,
+      },
+      where: { id: id },
+    });
+    if (!user) throw new NotFoundException('user introuvable');
+
+    return user;
   }
 
   async update(
