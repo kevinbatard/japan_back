@@ -35,6 +35,7 @@ export class UsersService {
         pseudo: true,
         email: true,
         visited_regions: true,
+        ranks: { name: true },
         access_lvl: true,
       },
       where: { id: id },

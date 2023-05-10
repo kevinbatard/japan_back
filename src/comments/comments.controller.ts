@@ -68,7 +68,7 @@ export class CommentsController {
 
   @ApiResponse({
     status: 200,
-    description: 'Vous avez modifié le commentaire n°${id}',
+    description: 'Commentaire modifié',
   })
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
