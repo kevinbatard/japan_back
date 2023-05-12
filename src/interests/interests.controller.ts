@@ -59,10 +59,13 @@ export class InterestsController {
   async find(@Param('id') id: string) {
     const isExist = await this.regionsService.findOneById(+id);
     if (!isExist) throw new NotFoundException('Région introuvable');
+
+    const interests = await this.interestsService.findAllInterests(+id);
+
     return {
       statusCode: 200,
       message: `Voici tout les points d'intéret de la region ${isExist.name}.`,
-      data: await this.interestsService.findAllInterests(+id),
+      data: interests,
     };
   }
 
