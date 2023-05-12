@@ -44,7 +44,7 @@ export class InterestsController {
       userData,
     );
     return {
-      StatusCode: 200,
+      StatusCode: 201,
       Message: `Point d'intéret ajouté`,
       data: newInterest,
     };
@@ -58,7 +58,7 @@ export class InterestsController {
   @Bind(Param('id', new ParseIntPipe()))
   async find(@Param('id') id: string) {
     const isExist = await this.regionsService.findOneById(+id);
-    if (!isExist) throw new NotFoundException();
+    if (!isExist) throw new NotFoundException('Région introuvable');
     return {
       statusCode: 200,
       message: `Voici tout les points d'intéret de la region ${isExist.name}.`,

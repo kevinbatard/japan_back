@@ -26,9 +26,12 @@ export class RegionsService {
   }
 
   async findOneById(id: number): Promise<Regions | null> {
-    return await Regions.findOne({
+    const region = await Regions.findOne({
       where: { id: id },
     });
+    if (region) return region;
+
+    return null;
   }
 
   async update(
