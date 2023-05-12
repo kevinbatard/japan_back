@@ -71,7 +71,7 @@ export class InterestsController {
 
   @ApiResponse({
     status: 200,
-    description: "Vous avez modifié le point d'intéret n°${id}",
+    description: "Vous avez modifié le point d'intéret",
   })
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
@@ -85,7 +85,8 @@ export class InterestsController {
       updateInterestDto,
     );
 
-    if (interestUpdated === null) throw new NotFoundException();
+    if (interestUpdated === null)
+      throw new NotFoundException("Ce point d'intéret n'existe pas");
 
     return {
       StatusCode: 200,
