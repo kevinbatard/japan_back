@@ -44,7 +44,7 @@ export class InterestsController {
       userData,
     );
     return {
-      StatusCode: 200,
+      StatusCode: 201,
       Message: `Point d'intéret ajouté`,
       data: newInterest,
     };
@@ -58,17 +58,20 @@ export class InterestsController {
   @Bind(Param('id', new ParseIntPipe()))
   async find(@Param('id') id: string) {
     const isExist = await this.regionsService.findOneById(+id);
-    if (!isExist) throw new NotFoundException();
+    if (!isExist) throw new NotFoundException('Région introuvable');
+
+    const interests = await this.interestsService.findAllInterests(+id);
+
     return {
       statusCode: 200,
       message: `Voici tout les points d'intéret de la region ${isExist.name}.`,
-      data: await this.interestsService.findAllInterests(+id),
+      data: interests,
     };
   }
 
   @ApiResponse({
     status: 200,
-    description: "Vous avez modifié le point d'intéret n°${id}",
+    description: "Vous avez modifié le point d'intéret",
   })
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
@@ -82,7 +85,8 @@ export class InterestsController {
       updateInterestDto,
     );
 
-    if (interestUpdated === null) throw new NotFoundException();
+    if (interestUpdated === null)
+      throw new NotFoundException("Ce point d'intéret n'existe pas");
 
     return {
       StatusCode: 200,

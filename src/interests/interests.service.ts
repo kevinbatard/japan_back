@@ -45,7 +45,7 @@ export class InterestsService {
   }
 
   async findAllInterests(id: number): Promise<Interests[] | null> {
-    const test = await Interests.find({
+    const interestList = await Interests.find({
       relations: { region: true, category: true, user: true },
       where: { region: { id: id }, deleted_at: IsNull() },
       select: {
@@ -62,8 +62,9 @@ export class InterestsService {
       },
       order: { created_at: 'DESC' },
     });
+    if (interestList) return interestList;
 
-    return test;
+    return null;
   }
 
   async update(
