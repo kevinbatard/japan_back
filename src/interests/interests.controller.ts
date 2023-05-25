@@ -43,6 +43,10 @@ export class InterestsController {
       createInterestDto,
       userData,
     );
+
+    if (newInterest === null)
+      throw new NotFoundException("Cette région n'existe pas");
+
     return {
       StatusCode: 201,
       Message: `Point d'intéret ajouté`,

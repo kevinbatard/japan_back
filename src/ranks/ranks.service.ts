@@ -19,8 +19,10 @@ export class RanksService {
     return await Ranks.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} rank`;
+  async findOne(id: number): Promise<Ranks | null> {
+    const rank = await Ranks.findOneBy({ id });
+
+    return rank;
   }
 
   async update(

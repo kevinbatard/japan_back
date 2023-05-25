@@ -66,7 +66,7 @@ export class UsersService {
       await visit.save();
 
       return await Users.findOne({
-        relations: { visited_regions: true },
+        relations: { visited_regions: true, ranks: true },
         where: { id: userData.id },
       });
     }
@@ -91,11 +91,32 @@ export class UsersService {
       await visit.save();
 
       return await Users.findOne({
-        relations: { visited_regions: true },
+        relations: { visited_regions: true, ranks: true },
         where: { id: userData.id },
       });
     }
 
     return null;
+  }
+
+  async rankUpdate(
+    updateUserDto: UpdateUserDto,
+    userData: Users,
+  ): Promise<Users | null> {
+    const user = await Users.findOne({
+      relations: { ranks: true },
+      where: { id: userData.id },
+    });
+
+    if (!user) return null;
+
+    user.ranks = updateUserDto.rank;
+
+    await user.save();
+
+    return await Users.findOne({
+      relations: { visited_regions: true, ranks: true },
+      where: { id: userData.id },
+    });
   }
 }

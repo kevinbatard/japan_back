@@ -57,8 +57,13 @@ export class RanksController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ranksService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const rank = await this.ranksService.findOne(+id);
+    return {
+      StatusCode: 200,
+      Message: `Rang ${rank?.name}`,
+      Data: rank,
+    };
   }
 
   @UseGuards(JwtAuthGuard)

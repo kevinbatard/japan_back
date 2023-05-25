@@ -53,7 +53,7 @@ export class UsersController {
       createUserDto,
     ); /* Créé le nouvel utilisateur */
     return {
-      StatusCode: 201,
+      statusCode: 201,
       message: `${createUserDto.pseudo} a bien été enregistré` /* Concatenation d'une variable dans un string littéral pour écrire le pseudo */,
       data: data /* Renvoie la data sans le mot de passe évidemment */,
     };
@@ -74,7 +74,7 @@ export class UsersController {
     if (newVisit === null)
       throw new ConflictException('Vous avez déjà visité cette région');
 
-    return { StatusCode: 200, message: 'Visite enregistrée.', data: newVisit };
+    return { statusCode: 200, message: 'Visite enregistrée.', data: newVisit };
   }
 
   @ApiResponse({ status: 200, description: 'Visite retirée.' })
@@ -91,10 +91,33 @@ export class UsersController {
       updateUserDto,
       userData,
     );
-    console.log(removeVisit);
 
     if (removeVisit === null)
       throw new NotFoundException("Vous n'avez pas visité cette région");
-    return { StatusCode: 200, message: 'Visite retirée.', data: removeVisit };
+    return { statusCode: 200, message: 'Visite retirée.', data: removeVisit };
+  }
+
+  @ApiResponse({ status: 200, description: 'Rang modifié.' })
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Patch('rank')
+  async patch(
+    @Body() updateUserDto: UpdateUserDto,
+    @Req() req: { user: Users },
+  ) {
+    const userData = req.user;
+
+    const updateRank = await this.usersService.rankUpdate(
+      updateUserDto,
+      userData,
+    );
+
+    if (!updateRank) throw new NotFoundException('Utilisateur introuvable');
+
+    return {
+      statusCode: 200,
+      message: 'Rang modifié',
+      data: updateRank,
+    };
   }
 }

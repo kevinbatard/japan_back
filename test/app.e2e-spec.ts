@@ -15,10 +15,32 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+  describe('/auth/login (POST)', () => {
+    it('Retourne le token et le user', async () => {
+      await request(app.getHttpServer())
+        .post('/auth/login')
+        .send({
+          pseudo: 'Azuries',
+          password: 'Canaille:40',
+        })
+        .expect(201);
+    });
+    it('Password incorrect', async () => {
+      await request(app.getHttpServer())
+        .post('/auth/login')
+        .send({ pseudo: 'Azuries', password: 'Canaille:41' })
+        .expect(401);
+    });
+  });
+
+  it('Pseudo incorrect', async () => {
+    await request(app.getHttpServer())
+      .post('/auth/login')
+      .send({ pseudo: 'Allo', password: 'anything' })
+      .expect(400);
+  });
+
+  afterEach(() => {
+    app.close();
   });
 });

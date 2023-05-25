@@ -10,7 +10,7 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api/');
   const config = new DocumentBuilder()
-    .setTitle('Japan travels')
+    .setTitle("Japan's travels")
     .setDescription('Partagez vos souvenirs de voyage, ou préparez le votre !')
     .setVersion('1.0')
     .addTag('Japan')
